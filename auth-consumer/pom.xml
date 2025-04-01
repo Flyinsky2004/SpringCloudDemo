@@ -54,6 +54,11 @@
             <artifactId>spring-cloud-loadbalancer</artifactId>
         </dependency>
         <dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+        <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
             <version>2021.0.5.0</version>
