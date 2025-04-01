@@ -19,11 +19,11 @@ public class RestBean<T> {
     }
 
     public static <T> RestBean<T> success(String message) {
-        return new RestBean<>(200, true, message ,null);
+        return new RestBean<>(20000, true, message ,null);
     }
 
     public static <T> RestBean<T> success(String message , T data) {
-        return new RestBean<>(200, true, message, data);
+        return new RestBean<>(20000, true, message, data);
     }
 
     public static <T> RestBean<T> failure(int status, String message) {

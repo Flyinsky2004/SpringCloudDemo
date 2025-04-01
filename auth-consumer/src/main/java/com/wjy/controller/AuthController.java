@@ -32,21 +32,21 @@ public class AuthController {
     private String appName;
 
     @PostMapping("login")
-    public RestBean<User> login(@RequestBody User user){
+    public ResponseEntity<RestBean<?>> login(@RequestBody User user){
         ServiceInstance serviceInstance = loadBalancerClient.choose("auth-provider");
         String url = String.format("http://%s:%s/api/auth/login", serviceInstance.getHost(), serviceInstance.getPort());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<User> reqEntity = new HttpEntity<User>(user,headers);
         try{
-            ResponseEntity<RestBean>  resp = restTemplate.postForEntity(url, reqEntity, RestBean.class);
-            if (resp.getStatusCode() ==  HttpStatus.OK) {
-                return resp.getBody();
+            ResponseEntity<RestBean> resp = restTemplate.postForEntity(url, reqEntity, RestBean.class);
+            if (resp.getBody().getStatus() == 20000) {
+                return ResponseEntity.ok(resp.getBody());
             }else{
-                return RestBean.failure(500, "发生错误，请稍后重试:" + resp.getBody().getMessage());
+                return new ResponseEntity<RestBean<?>>(RestBean.failure(10086,resp.getBody().getMessage()),HttpStatus.UNAUTHORIZED);
             }
         }catch (Exception e){
-            return RestBean.failure(500, "发生错误，请稍后重试:" + e.getMessage());
+                return new ResponseEntity<RestBean<?>>(RestBean.failure(10001, e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @GetMapping("/echo/auth")

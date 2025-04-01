@@ -13,7 +13,8 @@ import com.wjy.auth.entity.pojo.User;
 public class AuthController {
     @PostMapping("login")
     public RestBean<User> login(@RequestBody User user){
-        return RestBean.success("login successed",user);
+        if (user.getUsername().equals("123")) return RestBean.success("login successed",user);
+        else return RestBean.failure(50501, "用户名错了傻逼");
     }
     
 }
